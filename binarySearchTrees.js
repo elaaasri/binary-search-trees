@@ -70,6 +70,19 @@ class Tree {
       }
     }
   }
+  // returns the node with the given value :
+  find(value) {
+    let root = this.root;
+    while (root != null) {
+      if (value === root.data) return root; // return target node
+      if (value > root.data) {
+        root = root.right;
+      } else {
+        root = root.left;
+      }
+    }
+    return "value not found in the tree!";
+  }
 }
 // creates tree instance :
 const tree = new Tree();
@@ -82,7 +95,8 @@ tree.prettyPrint();
 // adding some nodes :
 console.log("#".repeat(20));
 tree.insert(7000);
-tree.insert(20);
+tree.insert(2);
 tree.insert(0);
 tree.insert(-1);
 tree.prettyPrint();
+console.log(tree.find(0));
