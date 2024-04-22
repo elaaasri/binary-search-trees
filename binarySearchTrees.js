@@ -27,7 +27,7 @@ class Tree {
     rootNode.right = this.buildTree(right);
     // stores root :
     this.root = rootNode;
-    return rootNode;
+    return this.root;
   }
   // return a structure visualizing binary search tree  :
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
@@ -48,40 +48,73 @@ class Tree {
   }
   // insert given value to it's appropriate place as a leaf :
   insert(value) {
-    let root = this.root;
-    while (root != null) {
+    let rootNode = this.root;
+    while (rootNode != null) {
       // stops execution after adding the value to the tree :
-      if (value === root.data) return;
-      // if val > root traverse the right tree :
-      if (value > root.data) {
-        // adding node value to the end of tree right side:
-        if (root.right === null) {
-          root.right = new Node(value);
+      if (value === rootNode.data) return;
+      // if val > rootNode traverse the right tree :
+      if (value > rootNode.data) {
+        // adding rootNode value to the end of tree right side:
+        if (rootNode.right === null) {
+          rootNode.right = new Node(value);
         }
-        root = root.right;
+        rootNode = rootNode.right;
       }
-      // if val < root traverse the left tree :
+      // if val < rootNode traverse the left tree :
       else {
-        // adding node value to the end of tree left side:
-        if (root.left === null) {
-          root.left = new Node(value);
+        // adding rootNode value to the end of tree left side:
+        if (rootNode.left === null) {
+          rootNode.left = new Node(value);
         }
-        root = root.left;
+        rootNode = rootNode.left;
       }
     }
   }
   // returns the node with the given value :
   find(value) {
-    let root = this.root;
-    while (root != null) {
-      if (value === root.data) return root; // return target node
-      if (value > root.data) {
-        root = root.right;
+    let rootNode = this.root;
+    while (rootNode != null) {
+      if (value === rootNode.data) return rootNode; // return target node
+      if (value > rootNode.data) {
+        rootNode = rootNode.right;
       } else {
-        root = root.left;
+        rootNode = rootNode.left;
       }
     }
     return "value not found in the tree!";
+  }
+  // removes the given value node and organize structure of the tree! :
+  remove(value) {
+    let rootNode = this.root;
+    let parentNode = null;
+    let isLeft = true;
+    while (rootNode != null) {
+      if (rootNode === null) return;
+      // case 1 : removing the root node which is a leaf! :
+      if (
+        rootNode.data === value &&
+        rootNode.right === null &&
+        rootNode.left === null
+      ) {
+        // checks which path (right/left) the parent went to the target node :
+        if (isLeft) {
+          parentNode.left = null;
+        } else {
+          parentNode.right = null;
+        }
+        return "the given value node removed!";
+      }
+      parentNode = rootNode; // stores parent node.
+      // traverse left and right subtrees :
+      if (value > rootNode.data) {
+        isLeft = false; // stores parent path.
+        rootNode = rootNode.right;
+      } else {
+        isLeft = true; // stores parent path.
+        rootNode = rootNode.left;
+      }
+    }
+    return "node not found!";
   }
 }
 // creates tree instance :
@@ -98,5 +131,6 @@ tree.insert(7000);
 tree.insert(2);
 tree.insert(0);
 tree.insert(-1);
+console.log(tree.find(7000));
+console.log(tree.remove(-1));
 tree.prettyPrint();
-console.log(tree.find(0));
