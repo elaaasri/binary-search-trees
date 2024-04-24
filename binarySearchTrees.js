@@ -8,8 +8,8 @@ class Node {
 }
 // tree class :
 class Tree {
-  constructor(root) {
-    this.root = root;
+  constructor() {
+    this.root = null;
   }
   // returns balanced binary tree :
   buildTree(array) {
@@ -19,14 +19,16 @@ class Tree {
     const mid = Math.floor((start, end) / 2);
     // base case :
     if (start > end) return null;
-    const rootNode = new Node(sortedArray[mid]);
-    const left = sortedArray.slice(start, mid);
-    const right = sortedArray.slice(mid + 1, end + 1);
-    // recursive case :
-    rootNode.left = this.buildTree(left);
-    rootNode.right = this.buildTree(right);
-    // stores root :
-    this.root = rootNode;
+    else {
+      const rootNode = new Node(sortedArray[mid]);
+      const left = sortedArray.slice(start, mid);
+      const right = sortedArray.slice(mid + 1, end + 1);
+      // recursive case :
+      rootNode.left = this.buildTree(left);
+      rootNode.right = this.buildTree(right);
+      // storing root :
+      this.root = rootNode;
+    }
     return this.root;
   }
   // return a structure visualizing binary search tree  :
@@ -86,11 +88,10 @@ class Tree {
   // removes the given value node and organize structure of the tree! :
   remove(value) {
     let rootNode = this.root;
-    let parentNode = null;
+    let parentNode;
     let isLeft = true;
     while (rootNode != null) {
-      if (rootNode === null) return;
-      // case 1 : removing the root node which is a leaf! :
+      // case 1 : removing target node which is a leaf (has no children)  :
       if (
         rootNode.data === value &&
         rootNode.right === null &&
@@ -102,7 +103,27 @@ class Tree {
         } else {
           parentNode.right = null;
         }
-        return "the given value node removed!";
+        return `given value node ${value}, which is a leaf has removed!`;
+      }
+      // case 2 : removing target node which has one child :
+      else if (
+        rootNode.data === value &&
+        (rootNode.right !== null || rootNode.left !== null)
+      ) {
+        let childNode;
+        // storing child node :
+        if (rootNode.left != null) {
+          childNode = rootNode.left;
+        } else {
+          childNode = rootNode.right;
+        }
+        // assigning parent node to target node's child with the the correct path! :
+        if (isLeft) {
+          parentNode.left = childNode;
+        } else {
+          parentNode.right = childNode;
+        }
+        return `given value node ${value}, which has 1 child has removed!`;
       }
       parentNode = rootNode; // stores parent node.
       // traverse left and right subtrees :
@@ -114,7 +135,7 @@ class Tree {
         rootNode = rootNode.left;
       }
     }
-    return "node not found!";
+    return "given value node not found!";
   }
 }
 // creates tree instance :
@@ -124,14 +145,24 @@ let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // bst methods :
 console.log(tree.buildTree(arr));
 console.log("#".repeat(20));
-tree.prettyPrint();
 // adding some nodes :
 console.log("#".repeat(20));
 tree.insert(7000);
 tree.insert(2);
 tree.insert(0);
 tree.insert(-1);
-console.log(tree.find(7000));
-console.log(tree.remove(-1));
 tree.prettyPrint();
-//
+console.log(tree.find(67));
+console.log("#".repeat(20));
+console.log(tree.remove(7000));
+console.log(tree.remove(3));
+tree.prettyPrint();
+
+// case 3 :
+// else if (
+//   rootNode.data === value &&
+//   rootNode.right !== null &&
+//   rootNode.left !== null
+// ) {
+//   console.log(rootNode.data);
+// }
