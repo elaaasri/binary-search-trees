@@ -105,10 +105,44 @@ class Tree {
         }
         return `given value node ${value}, which is a leaf has removed!`;
       }
+      // case 3 : removing target node which two childs! :
+      else if (
+        rootNode.data === value &&
+        rootNode.right != null &&
+        rootNode.left != null
+      ) {
+        let rightSubtree = rootNode.right;
+        // case (3:1) : if the right child has no children :
+        if (rightSubtree.right == null && rightSubtree.left == null) {
+          rootNode.data = rightSubtree.data;
+          rootNode.right = null;
+        } else {
+          let leftMost = rootNode.right;
+          let leftMostChild;
+          let leftMostParent;
+          // traverse to left most value of target node :
+          while (leftMost != null) {
+            // case (3:2) : if left most value it's right subtree :
+            if (leftMost.left == null && leftMost.right != null) {
+              leftMostChild = leftMost.right;
+              rootNode.data = leftMost.data;
+              rootNode.right = leftMostChild;
+            }
+            // case (3:3) : if left most value has no childs :
+            else if (leftMost.left == null && leftMost.right == null) {
+              rootNode.data = leftMost.data;
+              leftMostParent.left = null;
+            }
+            leftMostParent = leftMost; // storing left most parent.
+            leftMost = leftMost.left; // traversing.
+          }
+        }
+        return `given value node ${value}, which has 2 childs has removed!`;
+      }
       // case 2 : removing target node which has one child :
       else if (
         rootNode.data === value &&
-        (rootNode.right !== null || rootNode.left !== null)
+        (rootNode.right != null || rootNode.left != null)
       ) {
         let childNode;
         // storing child node :
@@ -142,27 +176,24 @@ class Tree {
 const tree = new Tree();
 // let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// bst methods :
+// bst tree :
 console.log(tree.buildTree(arr));
-console.log("#".repeat(20));
+console.log("original array tree :");
+tree.prettyPrint();
 // adding some nodes :
-console.log("#".repeat(20));
 tree.insert(7000);
 tree.insert(2);
 tree.insert(0);
 tree.insert(-1);
-tree.prettyPrint();
-console.log(tree.find(67));
+tree.insert(6344);
+tree.insert(20);
+// bst methods :
 console.log("#".repeat(20));
-console.log(tree.remove(7000));
-console.log(tree.remove(3));
+console.log("array tree after adding nodes :");
 tree.prettyPrint();
-
-// case 3 :
-// else if (
-//   rootNode.data === value &&
-//   rootNode.right !== null &&
-//   rootNode.left !== null
-// ) {
-//   console.log(rootNode.data);
-// }
+console.log("#".repeat(20));
+console.log("array tree after removing nodes :");
+console.log(tree.remove(-1)); // removing a node with no childs case (1)!
+console.log(tree.remove(3)); // removing a node with one child case (2)!
+console.log(tree.remove(4)); // removing a node with two childs case (3)!
+tree.prettyPrint();
