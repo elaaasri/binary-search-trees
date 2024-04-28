@@ -171,6 +171,21 @@ class Tree {
     }
     return "given value node not found!";
   }
+  // traverse the tree in breadth-first-search (bfs) / level order traversal :
+  // visits the nodes level by level from left to right :
+  levelOrder(rootNode = this.root) {
+    // initializing a queue :
+    let queue = [rootNode];
+    let result = [];
+    while (queue.length != 0) {
+      let currentNode = queue.pop(); // gets reference from current queue and empty it! :
+      // adding current node (left/right) to the queue (starting from left using unshift!) :
+      if (currentNode.left != null) queue.unshift(currentNode.left);
+      if (currentNode.right != null) queue.unshift(currentNode.right);
+      result.push(currentNode.data); // storing data.
+    }
+    return result;
+  }
 }
 // creates tree instance :
 const tree = new Tree();
@@ -197,3 +212,4 @@ console.log(tree.remove(-1)); // removing a node with no childs case (1)!
 console.log(tree.remove(3)); // removing a node with one child case (2)!
 console.log(tree.remove(4)); // removing a node with two childs case (3)!
 tree.prettyPrint();
+console.log(tree.levelOrder());
