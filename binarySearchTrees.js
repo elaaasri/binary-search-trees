@@ -188,7 +188,7 @@ class Tree {
     return result;
   }
   // traverses the tree in depth-first-search (DFS) :
-  // returns an array using inOrder traversal (left ==> root ==> right) :
+  // returns an array using In Order Traversal (left ==> root ==> right) :
   inOrder(rootNode = this.root) {
     let result = [];
     // base case :
@@ -201,33 +201,55 @@ class Tree {
     }
     return result;
   }
-  // - Preorder Traversal (DLR)  : root ==> left ==> right ==>  1, 2, 4, 5, 3
-  // - Postrder Traversal (LRD)  : left ==> right ==> root ==>  4, 5, 2, 1, 3
+  // returns an array using Pre Order Traversal (root ==> left ==> right) :
+  preOrder(rootNode = this.root) {
+    let result = [];
+    if (rootNode == null) return result;
+    else {
+      result.push(rootNode.data);
+      result = result.concat(this.preOrder(rootNode.left));
+      result = result.concat(this.preOrder(rootNode.right));
+    }
+    return result;
+  }
+  // returns an array using Post Order Traversal (left ==> right ==> root) :
+  postOrder(rootNode = this.root) {
+    let result = [];
+    if (rootNode == null) return result;
+    else {
+      result = result.concat(this.postOrder(rootNode.left));
+      result = result.concat(this.postOrder(rootNode.right));
+      result.push(rootNode.data);
+    }
+    return result;
+  }
 }
 // creates tree instance :
 const tree = new Tree();
-// let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-let arr = [1, 7, 4, 2, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [1, 2, 3, 4, 5, 6, 7];
+// let arr = [1, 7, 4, 2, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // bst tree :
 console.log(tree.buildTree(arr));
 console.log("original array tree :");
 tree.prettyPrint();
 // adding some nodes :
-tree.insert(7000);
-tree.insert(2);
-tree.insert(0);
-tree.insert(-1);
-tree.insert(6344);
-tree.insert(20);
+// tree.insert(7000);
+// tree.insert(2);
+// tree.insert(0);
+// tree.insert(-1);
+// tree.insert(6344);
+// tree.insert(20);
 // bst methods :
-console.log("#".repeat(20));
-console.log("array tree after adding nodes :");
-tree.prettyPrint();
-console.log("#".repeat(20));
-console.log("array tree after removing nodes :");
-console.log(tree.remove(-1)); // removing a node with no childs case (1)!
-console.log(tree.remove(3)); // removing a node with one child case (2)!
-console.log(tree.remove(4)); // removing a node with two childs case (3)!
-tree.prettyPrint();
-console.log(tree.levelOrder());
-console.log(tree.inOrder());
+// console.log("#".repeat(20));
+// console.log("array tree after adding nodes :");
+// tree.prettyPrint();
+// console.log("#".repeat(20));
+// console.log("array tree after removing nodes :");
+// console.log(tree.remove(-1)); // removing a node with no childs case (1)!
+// console.log(tree.remove(3)); // removing a node with one child case (2)!
+// console.log(tree.remove(4)); // removing a node with two childs case (3)!
+// tree.prettyPrint();
+console.log(tree.levelOrder()); // returns (BFS) Traversal.
+console.log(tree.inOrder()); // returns In Order Traversal.
+console.log(tree.preOrder()); // returns Pre Order Traversal.
+console.log(tree.postOrder()); // returns Post Order Traversa.
