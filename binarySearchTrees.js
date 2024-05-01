@@ -173,7 +173,8 @@ class Tree {
   }
   // traverse the tree in breadth-first-search (bfs) / level order traversal :
   // visits the nodes level by level from left to right :
-  levelOrder(rootNode = this.root) {
+  levelOrder() {
+    let rootNode = this.root;
     // initializing a queue :
     let queue = [rootNode];
     let result = [];
@@ -186,11 +187,27 @@ class Tree {
     }
     return result;
   }
+  // traverses the tree in depth-first-search (DFS) :
+  // returns an array using inOrder traversal (left ==> root ==> right) :
+  inOrder(rootNode = this.root) {
+    let result = [];
+    // base case :
+    if (rootNode == null) return result;
+    else {
+      // recursive case :
+      result = result.concat(this.inOrder(rootNode.left)); // concat left subtree.
+      result.push(rootNode.data); // storing result.
+      result = result.concat(this.inOrder(rootNode.right)); // contat right subtree.
+    }
+    return result;
+  }
+  // - Preorder Traversal (DLR)  : root ==> left ==> right ==>  1, 2, 4, 5, 3
+  // - Postrder Traversal (LRD)  : left ==> right ==> root ==>  4, 5, 2, 1, 3
 }
 // creates tree instance :
 const tree = new Tree();
 // let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [1, 7, 4, 2, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // bst tree :
 console.log(tree.buildTree(arr));
 console.log("original array tree :");
@@ -213,3 +230,4 @@ console.log(tree.remove(3)); // removing a node with one child case (2)!
 console.log(tree.remove(4)); // removing a node with two childs case (3)!
 tree.prettyPrint();
 console.log(tree.levelOrder());
+console.log(tree.inOrder());
