@@ -13,7 +13,7 @@ class Tree {
     this.inOrderArray = [];
     this.preOrderArray = [];
     this.postOrderArray = [];
-    this.heightCounter = 0;
+    this.node;
   }
 
   // returns balanced binary tree :
@@ -230,15 +230,26 @@ class Tree {
     return this.postOrderArray;
   }
   // returns the height (the number of edges in the longest path from a given node to a leaf node) :
-  height(root = this.root) {
-    if (root == null) {
-      return -1;
+  height(node) {
+    const traverse = (existedNode) => {
+      if (existedNode == null) {
+        return 0;
+      } else {
+        let leftHeight = traverse(existedNode.left); // storing left height.
+        let rightHeight = traverse(existedNode.right); // storing right height.
+        // get longest path to a leaf node on each edge and adding +1 :
+        // then returns the max height between left and right subtrees :
+        return Math.max(leftHeight, rightHeight) + 1;
+      }
+    };
+    let root = this.root;
+    let findingExistingNode = this.find(node);
+    // if there's is a node :
+    if (typeof findingExistingNode == "object") {
+      root = findingExistingNode; // update root to the existed node.
+      return `heght of node (${node}) is : ${traverse(root)}`;
     } else {
-      let leftHeight = this.height(root.left); // storing left height.
-      let rightHeight = this.height(root.right); // storing right height.
-      // get longest path to a leaf node on each edge and adding +1 :
-      // then returns the max height between left and right subtrees :
-      return Math.max(leftHeight, rightHeight) + 1;
+      return "node not found!";
     }
   }
 }
@@ -276,4 +287,4 @@ console.log("original array tree :");
 tree.insert(-1);
 tree.insert(-2);
 tree.prettyPrint();
-console.log(tree.height(8));
+console.log(tree.height(2));
