@@ -10,7 +10,12 @@ class Node {
 class Tree {
   constructor() {
     this.root = null;
+    this.inOrderArray = [];
+    this.preOrderArray = [];
+    this.postOrderArray = [];
+    this.heightCounter = 0;
   }
+
   // returns balanced binary tree :
   buildTree(array) {
     const sortedArray = [...new Set(array.sort((a, b) => a - b))];
@@ -190,38 +195,51 @@ class Tree {
   // traverses the tree in depth-first-search (DFS) :
   // returns an array using In Order Traversal (left ==> root ==> right) :
   inOrder(rootNode = this.root) {
-    let result = [];
     // base case :
-    if (rootNode == null) return result;
+    if (rootNode == null) return;
     else {
       // recursive case :
-      result = result.concat(this.inOrder(rootNode.left)); // concat left subtree.
-      result.push(rootNode.data); // storing result.
-      result = result.concat(this.inOrder(rootNode.right)); // contat right subtree.
+      this.inOrder(rootNode.left);
+      this.inOrderArray.push(rootNode.data);
+      this.inOrder(rootNode.right);
     }
-    return result;
+    return this.inOrderArray;
   }
   // returns an array using Pre Order Traversal (root ==> left ==> right) :
   preOrder(rootNode = this.root) {
-    let result = [];
-    if (rootNode == null) return result;
+    // base case :
+    if (rootNode == null) return;
     else {
-      result.push(rootNode.data);
-      result = result.concat(this.preOrder(rootNode.left));
-      result = result.concat(this.preOrder(rootNode.right));
+      // recursive case :
+      this.preOrderArray.push(rootNode.data);
+      this.preOrder(rootNode.left);
+      this.preOrder(rootNode.right);
     }
-    return result;
+    return this.preOrderArray;
   }
   // returns an array using Post Order Traversal (left ==> right ==> root) :
   postOrder(rootNode = this.root) {
-    let result = [];
-    if (rootNode == null) return result;
+    // base case :
+    if (rootNode == null) return;
     else {
-      result = result.concat(this.postOrder(rootNode.left));
-      result = result.concat(this.postOrder(rootNode.right));
-      result.push(rootNode.data);
+      // recursive case :
+      this.postOrder(rootNode.left);
+      this.postOrder(rootNode.right);
+      this.postOrderArray.push(rootNode.data);
     }
-    return result;
+    return this.postOrderArray;
+  }
+  // returns the height (the number of edges in the longest path from a given node to a leaf node) :
+  height(root = this.root) {
+    if (root == null) {
+      return -1;
+    } else {
+      let leftHeight = this.height(root.left); // storing left height.
+      let rightHeight = this.height(root.right); // storing right height.
+      // get longest path to a leaf node on each edge and adding +1 :
+      // then returns the max height between left and right subtrees :
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
   }
 }
 // creates tree instance :
@@ -231,7 +249,7 @@ let arr = [1, 2, 3, 4, 5, 6, 7];
 // bst tree :
 console.log(tree.buildTree(arr));
 console.log("original array tree :");
-tree.prettyPrint();
+// tree.prettyPrint();
 // adding some nodes :
 // tree.insert(7000);
 // tree.insert(2);
@@ -249,7 +267,13 @@ tree.prettyPrint();
 // console.log(tree.remove(3)); // removing a node with one child case (2)!
 // console.log(tree.remove(4)); // removing a node with two childs case (3)!
 // tree.prettyPrint();
-console.log(tree.levelOrder()); // returns (BFS) Traversal.
-console.log(tree.inOrder()); // returns In Order Traversal.
-console.log(tree.preOrder()); // returns Pre Order Traversal.
-console.log(tree.postOrder()); // returns Post Order Traversa.
+// console.log(tree.levelOrder()); // returns (BFS) Traversal.
+// console.log(tree.inOrder()); // returns In Order Traversal.
+// console.log(tree.preOrder()); // returns Pre Order Traversal.
+// console.log(tree.postOrder()); // returns Post Order Traversal.
+// tree.insert(6344);
+// tree.insert(6342);
+tree.insert(-1);
+tree.insert(-2);
+tree.prettyPrint();
+console.log(tree.height(8));
