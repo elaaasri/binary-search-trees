@@ -246,7 +246,7 @@ class Tree {
     let findingExistingNode = this.find(node);
     // if a node existed :
     if (findingExistingNode != null) {
-      return `heght of node (${node}) is : ${getHeight(findingExistingNode)}`;
+      return getHeight(findingExistingNode);
     } else {
       return "node not found!";
     }
@@ -273,6 +273,18 @@ class Tree {
       return "node not found!";
     }
   }
+  // checks if the tree is balanced (a balanced tree is the difference between left and right subtrees should not be more 1!) :
+  isBalanced() {
+    let rootNode = this.root;
+    // gets height of the longest path of left and right subtrees :
+    let leftPathHeight = rootNode.left ? this.height(rootNode.left.data) : 0; // if there is no left subtree => assigns height of leftPathHeight to 0.
+    let rightPathHeight = rootNode.right ? this.height(rootNode.right.data) : 0; // if there is no right subtree =>  assigns height of rightPathHeight to 0.
+    let difference = leftPathHeight - rightPathHeight;
+    // checks difference between left and right subtrees to not be more that 1! :
+    return difference >= -1 && difference <= 1
+      ? "Tree Is Balanced!"
+      : "Tree Not Balanced!";
+  }
 }
 // creates tree instance :
 const tree = new Tree();
@@ -294,7 +306,21 @@ console.log("original array tree :");
 // console.log("array tree after adding nodes :");
 // tree.prettyPrint();
 // console.log("#".repeat(20));
-// console.log("array tree after removing nodes :");
+// console.log("array tree after removing nodes :"):");
+// tree.prettyPrint();
+// adding some nodes :
+// tree.insert(7000);
+// tree.insert(2);
+// tree.insert(0);
+// tree.insert(-1);
+// tree.insert(6344);
+// tree.insert(20);
+// bst methods :
+// console.log("#".repeat(20));
+// console.log("array tree after adding nodes :");
+// tree.prettyPrint();
+// console.log("#".repeat(20));
+// console.log("array tree after removing nodes :";
 // console.log(tree.remove(-1)); // removing a node with no childs case (1)!
 // console.log(tree.remove(3)); // removing a node with one child case (2)!
 // console.log(tree.remove(4)); // removing a node with two childs case (3)!
@@ -305,8 +331,9 @@ console.log("original array tree :");
 // console.log(tree.postOrder()); // returns Post Order Traversal.
 // tree.insert(6344);
 // tree.insert(6342);
-tree.insert(-1);
-tree.insert(-2);
+// tree.insert(-1);
+// tree.insert(-2);
+// tree.prettyPrint();
+// tree.insert(8);
 tree.prettyPrint();
-console.log(tree.height(4));
-console.log(tree.depth(-1));
+console.log(tree.isBalanced());
