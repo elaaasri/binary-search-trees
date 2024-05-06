@@ -10,9 +10,6 @@ class Node {
 class Tree {
   constructor() {
     this.root = null;
-    this.inOrderArray = [];
-    this.preOrderArray = [];
-    this.postOrderArray = [];
   }
   // returns balanced binary tree :
   buildTree(array) {
@@ -106,7 +103,7 @@ class Tree {
         } else {
           parentNode.right = null;
         }
-        return `given value node ${value}, which is a leaf has removed!`;
+        return `given value node ${value}, which has no childs (leaf), been removed!`;
       }
       // case 3 : removing target node which two childs! :
       else if (
@@ -140,7 +137,7 @@ class Tree {
             leftMost = leftMost.left; // traversing.
           }
         }
-        return `given value node ${value}, which has 2 childs has removed!`;
+        return `given value node ${value}, which has two childs, been removed!`;
       }
       // case 2 : removing target node which has one child :
       else if (
@@ -160,7 +157,7 @@ class Tree {
         } else {
           parentNode.right = childNode;
         }
-        return `given value node ${value}, which has 1 child has removed!`;
+        return `given value node ${value}, which has one child, been removed!`;
       }
       parentNode = rootNode; // stores parent node.
       // traverse left and right subtrees :
@@ -193,42 +190,46 @@ class Tree {
   // traverses the tree in depth-first-search (DFS) :
   // returns an array using In Order Traversal (left ==> root ==> right) :
   inOrder(rootNode = this.root) {
+    let result = [];
     // base case :
-    if (rootNode == null) return;
+    if (rootNode == null) return result;
     else {
       // recursive case :
-      this.inOrder(rootNode.left);
-      this.inOrderArray.push(rootNode.data);
-      this.inOrder(rootNode.right);
+      result = result.concat(this.inOrder(rootNode.left)); // concat left subtree.
+      result.push(rootNode.data); // storing result.
+      result = result.concat(this.inOrder(rootNode.right)); // contat right subtree.
     }
-    return this.inOrderArray;
+    return result;
   }
   // returns an array using Pre Order Traversal (root ==> left ==> right) :
   preOrder(rootNode = this.root) {
+    let result = [];
     // base case :
-    if (rootNode == null) return;
+    if (rootNode == null) return result;
     else {
       // recursive case :
-      this.preOrderArray.push(rootNode.data);
-      this.preOrder(rootNode.left);
-      this.preOrder(rootNode.right);
+      result.push(rootNode.data);
+      result = result.concat(this.preOrder(rootNode.left)); // concat left subtree.
+      result = result.concat(this.preOrder(rootNode.right)); // contat right subtree.
     }
-    return this.preOrderArray;
+    return result;
   }
   // returns an array using Post Order Traversal (left ==> right ==> root) :
   postOrder(rootNode = this.root) {
+    let result = [];
     // base case :
-    if (rootNode == null) return;
+    if (rootNode == null) return result;
     else {
       // recursive case :
-      this.postOrder(rootNode.left);
-      this.postOrder(rootNode.right);
-      this.postOrderArray.push(rootNode.data);
+      result = result.concat(this.postOrder(rootNode.left)); // concat left subtree.
+      result = result.concat(this.postOrder(rootNode.right)); // contat right subtree.
+      result.push(rootNode.data);
     }
-    return this.postOrderArray;
+    return result;
   }
   // returns the height (the number of edges in the longest path from a given node to a leaf node) :
   height(node) {
+    // get the height of existed node :
     const getHeight = (existedNode) => {
       if (existedNode == null) {
         return 0;
@@ -299,64 +300,49 @@ class Tree {
       : this.buildTree(getUnbalancedTreeArr());
   }
 }
+// get random array of length 20 :
+function getRandomArr() {
+  let randomArr = [];
+  for (let i = 0; i < 20; i++) {
+    randomArr.push(Math.floor(Math.random() * 101));
+  }
+  return randomArr;
+}
 // creates tree instance :
 const tree = new Tree();
-let arr = [1, 2, 3, 4, 5, 6, 7];
-// let arr = [1, 7, 4, 2, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// let arr = getRandomArr();
+let arr = [1, 7, 4, 2, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 // bst tree :
+console.log("original tree :");
 console.log(tree.buildTree(arr));
-console.log("original array tree :");
-// tree.prettyPrint();
-// adding some nodes :
-// tree.insert(7000);
-// tree.insert(2);
-// tree.insert(0);
-// tree.insert(-1);
-// tree.insert(6344);
-// tree.insert(20);
-// bst methods :
-// console.log("#".repeat(20));
-// console.log("array tree after adding nodes :");
-// tree.prettyPrint();
-// console.log("#".repeat(20));
-// console.log("array tree after removing nodes :"):");
-// tree.prettyPrint();
-// adding some nodes :
-// tree.insert(7000);
-// tree.insert(2);
-// tree.insert(0);
-// tree.insert(-1);
-// tree.insert(6344);
-// tree.insert(20);
-// bst methods :
-// console.log("#".repeat(20));
-// console.log("array tree after adding nodes :");
-// tree.prettyPrint();
-// console.log("#".repeat(20));
-// console.log("array tree after removing nodes :";
-// console.log(tree.remove(-1)); // removing a node with no childs case (1)!
-// console.log(tree.remove(3)); // removing a node with one child case (2)!
-// console.log(tree.remove(4)); // removing a node with two childs case (3)!
-// tree.prettyPrint();
-// console.log(tree.levelOrder()); // returns (BFS) Traversal.
-// console.log(tree.inOrder()); // returns In Order Traversal.
-// console.log(tree.preOrder()); // returns Pre Order Traversal.
-// console.log(tree.postOrder()); // returns Post Order Traversal.
-// tree.insert(6344);
-// tree.insert(6342);
-// tree.insert(8);
-// tree.insert(9);
-// tree.insert(10);
-// tree.insert(11);
-// tree.insert(12);
-tree.insert(4945);
-// tree.prettyPrint();
-// tree.insert(8);
-console.log(tree.remove(3));
-console.log(tree.remove(2));
-console.log(tree.remove(1));
 tree.prettyPrint();
-console.log(tree.isBalanced());
-console.log(tree.reBalance());
-console.log(tree.prettyPrint());
-console.log(tree.isBalanced());
+console.log("#".repeat(30));
+console.log("is tree balanced ?!", tree.isBalanced());
+console.log("Level Order Traversal :", tree.levelOrder()); // returns Breadth-First Traversal.
+console.log("In Order Traversal    :", tree.inOrder()); // returns In Order Traversal.
+console.log("Pre Order Traversal   :", tree.preOrder()); // returns Pre Order Traversal.
+console.log("Post Order Traversal  :", tree.postOrder()); // returns Post Order Traversal.
+// adding and removing some nodes :
+console.log("#".repeat(30));
+console.log("tree after adding and removing some node :");
+tree.insert(200);
+tree.insert(300);
+tree.insert(400);
+tree.insert(500);
+console.log("removing some nodes :");
+console.log("removing case (1) :", tree.remove(4)); // removing a node with no childs case (1)!
+console.log("removing case (2) :", tree.remove(5)); // removing a node with one child case (2)!
+console.log("removing case (2) :", tree.remove(3)); // removing a node with two childs case (3)!
+console.log("updated tree :");
+tree.prettyPrint();
+console.log("#".repeat(30));
+console.log("checking the tree after adding and removing :");
+console.log("is tree balanced ?!", tree.isBalanced());
+console.log("rebalance the tree:", tree.reBalance());
+console.log("is tree balanced ?!", tree.isBalanced());
+console.log("tree after balancing it :");
+tree.prettyPrint();
+console.log("Level Order Traversal :", tree.levelOrder()); // returns Breadth-First Traversal.
+console.log("In Order Traversal    :", tree.inOrder()); // returns In Order Traversal.
+console.log("Pre Order Traversal   :", tree.preOrder()); // returns Pre Order Traversal.
+console.log("Post Order Traversal  :", tree.postOrder()); // returns Post Order Traversal.
