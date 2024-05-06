@@ -14,7 +14,6 @@ class Tree {
     this.preOrderArray = [];
     this.postOrderArray = [];
   }
-
   // returns balanced binary tree :
   buildTree(array) {
     const sortedArray = [...new Set(array.sort((a, b) => a - b))];
@@ -281,9 +280,23 @@ class Tree {
     let rightPathHeight = rootNode.right ? this.height(rootNode.right.data) : 0; // if there is no right subtree =>  assigns height of rightPathHeight to 0.
     let difference = leftPathHeight - rightPathHeight;
     // checks difference between left and right subtrees to not be more that 1! :
-    return difference >= -1 && difference <= 1
-      ? "Tree Is Balanced!"
-      : "Tree Not Balanced!";
+    return difference >= -1 && difference <= 1 ? true : false;
+  }
+  reBalance() {
+    let isTreeBalanced = this.isBalanced();
+    let newUnbalancedArr = [];
+    const getUnbalancedTreeArr = (rootNode = this.root) => {
+      if (rootNode == null) return;
+      else {
+        newUnbalancedArr.push(rootNode.data);
+        getUnbalancedTreeArr(rootNode.left);
+        getUnbalancedTreeArr(rootNode.right);
+      }
+      return newUnbalancedArr;
+    };
+    return isTreeBalanced
+      ? "Tree is already balanced!"
+      : this.buildTree(getUnbalancedTreeArr());
   }
 }
 // creates tree instance :
@@ -331,9 +344,19 @@ console.log("original array tree :");
 // console.log(tree.postOrder()); // returns Post Order Traversal.
 // tree.insert(6344);
 // tree.insert(6342);
-// tree.insert(-1);
-// tree.insert(-2);
+// tree.insert(8);
+// tree.insert(9);
+// tree.insert(10);
+// tree.insert(11);
+// tree.insert(12);
+tree.insert(4945);
 // tree.prettyPrint();
 // tree.insert(8);
+console.log(tree.remove(3));
+console.log(tree.remove(2));
+console.log(tree.remove(1));
 tree.prettyPrint();
+console.log(tree.isBalanced());
+console.log(tree.reBalance());
+console.log(tree.prettyPrint());
 console.log(tree.isBalanced());
